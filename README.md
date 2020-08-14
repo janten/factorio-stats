@@ -1,5 +1,5 @@
 # factorio-stats
-Collects game statistics from a factorio server and exports them to an InfluxDB database. This tool uses factorio's RCON interface, which must be activated by running factorio with `--rcon-port 27015 --rcon- password secretRCONPassword`. Also works with headless servers.
+Collects game statistics from a factorio server and exports them to an InfluxDB database. This tool uses factorio's RCON interface, which must be activated by running factorio with `--rcon-port 27015 --rcon-password secretRCONPassword`. Also works with headless servers.
 
 The default collection interval is ten seconds and can be configured using the `COLLECTION_INTERVAL` environment variable.
 
