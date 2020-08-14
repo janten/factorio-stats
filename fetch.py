@@ -25,6 +25,7 @@ rcon_client = factorio_rcon.RCONClient(factorio_address, factorio_port, factorio
 influx_client = InfluxDBClient(influx_address, influx_port, influx_username, influx_password, influx_database)
 
 while True:
-    response = json.loads(rcon_client.send_command(rcon_command))
+    raw_response = rcon_client.send_command(rcon_command)
+    response = json.loads(raw_response)
     influx_client.write_points(response)
     time.sleep(collection_interval)

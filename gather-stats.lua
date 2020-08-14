@@ -79,6 +79,24 @@ for _, force_statistic in pairs(force_statistics) do
     end
 end
 
+for _, player in pairs(game.players) do
+    local name = player.name
+    local inventory = player.get_main_inventory().get_contents()
+    for item, count in pairs(inventory) do
+        local value = {
+            measurement = "player_inventory_statistics",
+            tags = {
+                player = name,
+                item = item
+            },
+            fields = {
+                value = count
+            }
+        }
+        table.insert(counts, value)
+    end
+end
+
 table.insert(counts, {
     measurement = "game_statistics", 
     fields = {

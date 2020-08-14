@@ -3,7 +3,7 @@ Collects game statistics from a factorio server and exports them to an InfluxDB 
 
 The default collection interval is ten seconds and can be configured using the `COLLECTION_INTERVAL` environment variable.
 
-Visualization can be done with Grafana. [Sample dashboard](https://snapshot.raintank.io/dashboard/snapshot/fQH7Q98LobdWiEWWNDS33qAQ8OGKZOTa).
+Visualization can be done with Grafana. [Sample dashboard](https://snapshot.raintank.io/dashboard/snapshot/1Gw1V6c9quaZDQcIQ945p9cu9rLUoShe).
 
 ## Running with Docker
 ```
