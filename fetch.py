@@ -1,31 +1,31 @@
 import os
 import time
 import json
-import pytimeparse
 import factorio_rcon
-from influxdb import InfluxDBClient
+from http.server import BaseHTTPRequestHandler, HTTPServer
 
-collection_interval = pytimeparse.parse(os.environ.get("COLLECTION_INTERVAL", "10s"))
-
-factorio_address = os.environ["FACTORIO_ADDRESS"]
+factorio_address = os.environ.get("FACTORIO_ADDRESS", "localhost")
 factorio_port = int(os.environ.get("FACTORIO_PORT", "27015"))
-factorio_password = os.environ["FACTORIO_PASSWORD"]
-
-influx_address = os.environ["INFLUX_ADDRESS"]
-influx_port = int(os.environ.get("INFLUX_PORT", "8086"))
-influx_username = os.environ.get("INFLUX_USERNAME", None)
-influx_password = os.environ.get("INFLUX_PASSWORD", None)
-influx_database = os.environ["INFLUX_DATABASE"]
+factorio_password = os.environ.get("FACTORIO_PASSWORD", "secretRCONPassword")
 
 with open("gather-stats.lua", "r") as f:
     stats_code = f.read()
     rcon_command = "/silent-command " + stats_code
 
-rcon_client = factorio_rcon.RCONClient(factorio_address, factorio_port, factorio_password)
-influx_client = InfluxDBClient(influx_address, influx_port, influx_username, influx_password, influx_database)
+class MyServer(BaseHTTPRequestHandler):  
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header("Content-type", "text/plain")
+        self.end_headers()
+        rcon_client = factorio_rcon.RCONClient(factorio_address, factorio_port, factorio_password)
+        raw_response = rcon_client.send_command(rcon_command)
+        self.wfile.write(raw_response.encode("utf-8"))
 
-while True:
-    raw_response = rcon_client.send_command(rcon_command)
-    response = json.loads(raw_response)
-    influx_client.write_points(response)
-    time.sleep(collection_interval)
+webServer = HTTPServer(("localhost", 8000), MyServer)
+try:
+    webServer.serve_forever()
+except KeyboardInterrupt:
+    pass
+
+webServer.server_close()
+print("Server stopped.")
