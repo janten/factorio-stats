@@ -6,9 +6,9 @@ Stats are available for scraping at port 8000.
 ## Running with Docker
 ```
 docker run \
-	-e FACTORIO_ADDRESS=your-server.com \
-	-e FACTORIO_PORT=27015 \
-	-e FACTORIO_PASSWORD=secretRCONPassword \
+    -e FACTORIO_ADDRESS=your-server.com \
+    -e FACTORIO_PORT=27015 \
+    -e FACTORIO_PASSWORD=secretRCONPassword \
     -p 8000:8000 \
-	janten/factorio-stats
+    janten/factorio-stats
 ```
